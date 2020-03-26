@@ -26,7 +26,7 @@ URL="${redmine_url}/projects/${redmine_project}/wiki/${redmine_wiki}.json?key=${
 JSON=`curl "$URL"`
 VERSION=`echo "$JSON" | jq -r '.wiki_page.version'`
 # TEXT=`echo "$JSON" | jq '.wiki_page.text' | sed -E "s/^\"//" | sed -E "s/\"$//"`
-TEXT=`echo "$JSON" | jq -r '.wiki_page.text'`
+TEXT=`echo "$JSON" | jq -r '.wiki_page.text' | nkf -Lu -w`
 NEWTEXT=`echo "$TEXT\n\n${text}" | sed -e :loop -e 'N; $!b loop' -e 's/\n/\\\\n/g'`
 
 BODY=$(cat << EOS
